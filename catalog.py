@@ -7,7 +7,7 @@ BASE_URL = "https://animesdigital.org"
 
 def obter_token_e_limite():
     try:
-        pagina_listagem_url = f"{BASE_URL}/animes" 
+        pagina_listagem_url = f"{BASE_URL}" 
         response = requests.get(pagina_listagem_url)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
@@ -115,7 +115,7 @@ def extrair_catalogo(dados):
 
 def get_lista_desenho():
     token_seguranca, limite_pagina = obter_token_e_limite()
-
+    print(token_seguranca, "  " , limite_pagina)
     if token_seguranca:
         dados_recebidos = buscar_animes(
             token=token_seguranca, 
@@ -136,3 +136,4 @@ def get_lista_desenho():
             return extrair_catalogo(dados_recebidos)
         
     return None
+
