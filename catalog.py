@@ -27,7 +27,7 @@ def obter_token_e_limite():
         token_element = soup.find(class_='menu_filter_box')
         token = token_element['data-secury'] if token_element else None
         limit_element = soup.find(class_='filter_number active')
-        limit = limit_element['data-value'] if limit_element else 100
+        limit = limit_element['data-value'] if limit_element else 290
         if not token:
             print("ERRO: Não foi possível encontrar o 'token' na página.")
             # return None, None
@@ -153,6 +153,7 @@ def get_lista_desenho():
             return extrair_catalogo(dados_recebidos)
         
     return None
+
 
 
 
