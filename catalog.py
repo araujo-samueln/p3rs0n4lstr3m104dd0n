@@ -5,6 +5,8 @@ from urllib.parse import urlparse
 
 BASE_URL = "https://animesdigital.org"
 
+TOKEN = "c1deb78cd4"
+
 HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
 }
@@ -27,10 +29,10 @@ def obter_token_e_limite():
         limit = limit_element['data-value'] if limit_element else 100
         if not token:
             print("ERRO: Não foi possível encontrar o 'token' na página.")
-            return None, None
+            # return None, None
         print(f"Token encontrado: {token}")
         print(f"Limite encontrado: {limit}")
-        return token, limit
+        return TOKEN, limit
     except requests.exceptions.RequestException as e:
         print(f"Erro ao buscar a página principal: {e}")
         return None, None
@@ -146,6 +148,7 @@ def get_lista_desenho():
             return extrair_catalogo(dados_recebidos)
         
     return None
+
 
 
 
