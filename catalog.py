@@ -9,10 +9,16 @@ HEADERS = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
 }
 
+
+PROX={
+        "http": "http://edlhxrdo:31f47r79qu9u@23.95.150.145:6114/",
+        "https": "http://edlhxrdo:31f47r79qu9u@23.95.150.145:6114/"
+    }
+
 def obter_token_e_limite():
     try:
         pagina_listagem_url = f"{BASE_URL}" 
-        response = requests.get(pagina_listagem_url, headers=HEADERS)
+        response = requests.get(pagina_listagem_url, headers=HEADERS, proxies=PROX)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
         token_element = soup.find(class_='menu_filter_box')
@@ -140,5 +146,6 @@ def get_lista_desenho():
             return extrair_catalogo(dados_recebidos)
         
     return None
+
 
 
