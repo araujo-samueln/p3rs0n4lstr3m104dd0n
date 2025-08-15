@@ -70,6 +70,10 @@ def buscar_animes(token, limit, pagina=1, pesquisa=0, filtros={}):
     
     try:
         response = requests.post(api_url, headers=headers, data=payload)
+        print("--- CONTEÚDO DA RESPOSTA RECEBIDA ---")
+        print(response.text)
+        print("------------------------------------")
+        
         texto_completo = response.text
         inicio_json = texto_completo.find('{')
         fim_json = texto_completo.rfind('}')
@@ -148,6 +152,7 @@ def get_lista_desenho():
             return extrair_catalogo(dados_recebidos)
         
     return None
+
 
 
 
