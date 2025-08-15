@@ -56,7 +56,7 @@ def get_stream_url(episode_slug):
     """Scrapes the final episode page to get the direct video URL."""
     try:
         page_url = f"{BASE_URL}/video/a/{episode_slug}" 
-        response = requests.get(page_url, headers=HEADERS)
+        response = requests.get(page_url, headers=HEADERS, proxies=PROX)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
         
@@ -72,4 +72,5 @@ def get_stream_url(episode_slug):
         print(f"Error scraping stream for '{episode_slug}': {e}")
 
         return None
+
 
