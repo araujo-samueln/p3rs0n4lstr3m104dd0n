@@ -14,6 +14,11 @@ BASE_URL = "http://127.0.0.1:5000" # URL base da sua aplicação.
 poster_cache = {}
 os.makedirs(POSTER_DIR, exist_ok=True)
 
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+}
+
+
 
 def get_processed_poster(series_id: str, jpg_url: str) -> str:
     """
@@ -33,7 +38,7 @@ def get_processed_poster(series_id: str, jpg_url: str) -> str:
         return local_png_url
 
     try:
-        response = requests.get(jpg_url, timeout=10)
+        response = requests.get(jpg_url, timeout=10, headers=HEADERS)
         response.raise_for_status()
 
         with Image.open(BytesIO(response.content)) as img:
@@ -57,4 +62,5 @@ def get_processed_poster(series_id: str, jpg_url: str) -> str:
         return jpg_url # Retorna URL original em caso de falha de rede.
     except Exception as e:
         print(f"Falha ao processar a imagem para series_id {series_id}: {e}")
+
         return jpg_url # Retorna URL original em caso de falha de processamento.
