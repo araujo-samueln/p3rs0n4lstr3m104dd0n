@@ -2,7 +2,6 @@ from flask import Flask, Response, jsonify, url_for, abort
 from functools import wraps
 import catalog
 import animesdigitalstream
-import auxiliar
 from datetime import datetime, timezone
 
 
@@ -10,22 +9,6 @@ app = Flask(__name__)
 
 OPTIONAL_META = ["posterShape", "background", "logo", "videos", "description", "releaseInfo", "imdbRating", "director", "cast",
                  "dvdRelease", "released", "inTheaters", "certification", "runtime", "language", "country", "awards", "website", "isPeered"]
-
-# def respond_with(response, allowed_origins=None):
-#     response = jsonify(response)
-#     # Permitir todas as origens (domínios)
-#     response.headers.setdefault('Access-Control-Allow-Origin', "*" ) # Permitir todas as origens por padrão
-    
-
-#     # Definir métodos e cabeçalhos permitidos
-#     response.headers.setdefault('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
-#     response.headers.setdefault('Access-Control-Allow-Headers', 'Content-Type')
-
-#     # Lidar com solicitações de preflight OPTIONS
-#     if response.status_code == 204:  # No Content
-#         response.headers.setdefault('Access-Control-Max-Age', '86400')  # Cache preflight response for 24h
-
-#     return response
 
 
 def respond_with(data):
@@ -105,7 +88,6 @@ def addon_meta(type, id):
         series_info = data['series_info']
         episodes_list = data['episodes']
         original_poster_url = series_info['poster']
-        converted_poster_url = auxiliar.get_processed_poster(series_slug, original_poster_url)
         
         video_objects = []
         for ep in episodes_list:
@@ -123,7 +105,7 @@ def addon_meta(type, id):
             'id': id,
             'type': type,
             'name': series_info['name'],
-            'poster' : converted_poster_url,
+            'poster' : original_poster_url,
             'videos': video_objects 
         }
 
