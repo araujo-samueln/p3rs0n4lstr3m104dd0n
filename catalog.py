@@ -1,9 +1,10 @@
-import requests
+import cloudscraper
 import json
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse
 
 BASE_URL = "https://animesdigital.org"
+scraper = cloudscraper.create_scraper()
 
 TOKEN = "c1deb78cd4"
 
@@ -20,7 +21,7 @@ PROX={
 def obter_token_e_limite():
     try:
         pagina_listagem_url = f"{BASE_URL}" 
-        response = requests.get(pagina_listagem_url, headers=HEADERS, proxies=PROX)
+        response = scraper.get(pagina_listagem_url, headers=HEADERS, proxies=PROX)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
         token_element = soup.find(class_='menu_filter_box')
@@ -33,7 +34,7 @@ def obter_token_e_limite():
         print(f"Token encontrado: {token}")
         print(f"Limite encontrado: {limit}")
         return TOKEN, limit
-    except requests.exceptions.RequestException as e:
+    except Exception as e:
         print(f"Erro ao buscar a página principal: {e}")
         return None, None
 
@@ -69,7 +70,7 @@ def buscar_animes(token, limit, pagina=1, pesquisa=0, filtros={}):
     }
     
     try:
-        response = requests.post(api_url, headers=headers, data=payload)
+        response = scraper.post(api_url, headers=headers, data=payload)
         print("--- CONTEÚDO DA RESPOSTA RECEBIDA ---")
         print(response.text)
         print("------------------------------------")
@@ -152,6 +153,7 @@ def get_lista_desenho():
             return extrair_catalogo(dados_recebidos)
         
     return None
+
 
 
 
