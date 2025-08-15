@@ -3,10 +3,14 @@ from bs4 import BeautifulSoup
 
 BASE_URL = "https://animesdigital.org"
 
+HEADERS = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+}
+
 def get_info(query):
     try:
         page_url = f"{BASE_URL}/anime/{query}"
-        response = requests.get(page_url)
+        response = requests.get(pagina_listagem_url, headers=HEADERS)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
         
@@ -47,7 +51,7 @@ def get_stream_url(episode_slug):
     """Scrapes the final episode page to get the direct video URL."""
     try:
         page_url = f"{BASE_URL}/video/a/{episode_slug}" 
-        response = requests.get(page_url)
+        response = requests.get(page_url, headers=HEADERS)
         response.raise_for_status()
         soup = BeautifulSoup(response.text, 'html.parser')
         
@@ -61,4 +65,5 @@ def get_stream_url(episode_slug):
         
     except Exception as e:
         print(f"Error scraping stream for '{episode_slug}': {e}")
+
         return None
