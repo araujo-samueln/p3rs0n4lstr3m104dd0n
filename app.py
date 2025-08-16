@@ -26,7 +26,7 @@ def addon_manifest():
 @app.route('/catalog/<type>/<id>.json')
 @app.route('/catalog/<type>/<id>/search=<search_query>.json')
 def addon_catalog(type: str, id: str, search_query: str = None):
-    if type != 'series' or id != 'desenhosCatalog':
+    if type != 'series':
         abort(404)
     
     metas = get_cached_catalog(id, search_query)
