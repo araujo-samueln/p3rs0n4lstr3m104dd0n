@@ -105,7 +105,7 @@ class AnimesDigitalScraper:
             return None
         
         all_episode_divs = []
-        pagination = soup.select_one("div.content-pagination")
+        pagination = soup.select_one("ul.content-pagination")
         
         if pagination:
             try:
