@@ -103,14 +103,35 @@ class AnimesDigitalScraper:
         except (AttributeError, TypeError):
             logging.error(f"Erro ao parsear metadados para '{series_slug}'.")
             return None
+        
+        all_episode_divs = []
+        pagination = soup.select_one("div.content-pagination")
+        
+        if pagination:
+            try:
+                last_page_link = pagination.select("li a")[-2]
+                total_pages = int(last_page_link.text)
+            except (IndexError, ValueError):
+                total_pages = 1
+
+            for page_num in range(total_pages, 0, -1):
+                current_url = f"{page_url}/page/{page_num}" if page_num > 1 else page_url
+                page_content = response_text if page_num == 1 else self._make_request('GET', current_url)
+                
+                if page_content:
+                    page_soup = BeautifulSoup(page_content, 'html.parser')
+                    all_episode_divs = page_soup.select("div.item_ep") + all_episode_divs
+        else:
+            all_episode_divs = soup.select("div.item_ep")
 
         episodes = []
-        for i, ep_div in enumerate(reversed(soup.select("div.item_ep"))):
+        for i, ep_div in enumerate(reversed(all_episode_divs), start=1):
             link = ep_div.find('a', href=True)
             if link:
                 episodes.append({
                     'id': link['href'].strip('/').split('/')[-1],
-                    'season': 1, 'episode': i + 1,
+                    'season': 1,
+                    'episode': i
                 })
         return {'name': name, 'poster': poster, 'episodes': episodes}
 
