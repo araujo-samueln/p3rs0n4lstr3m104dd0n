@@ -29,14 +29,22 @@ def addon_catalog(type: str, id: str, search_query: str = None):
     if type != 'series' or id != 'desenhosCatalog':
         abort(404)
     
-    metas = get_cached_catalog(search_query)
+    metas = get_cached_catalog(id, search_query)
     return respond_with({'metas': metas})
 
 @cached(cache)
-def get_cached_catalog(search_query: str = None):
+def get_cached_catalog(id: str, search_query: str = None):
     """Função cacheada para buscar e formatar o catálogo."""
     logging.info(f"CACHE MISS - Buscando catálogo (busca: {search_query or 'N/A'})")
-    items = scraper.get_cartoon_catalog(search_query)
+    
+    if id == 'desenhosCatalog':
+        id_type = "desenhos"
+        limit = 290
+    else:
+        id_type = "animes"
+        limit = 310
+    
+    items = scraper.get_catalog(id_type, limit, search_query)
     return [{'id': f"{ID_PREFIX}{i['id']}", **i} for i in items]
 
 @app.route('/meta/<type>/<id>.json')

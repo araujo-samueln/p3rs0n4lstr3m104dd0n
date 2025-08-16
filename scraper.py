@@ -30,21 +30,20 @@ class AnimesDigitalScraper:
             logging.error(f"Falha ao acessar {url}: {e}")
             return None
 
-    def _get_api_limit(self) -> int:
-        """Obtém o limite de itens por página para a chamada da API."""
-        response_text = self._make_request('GET', BASE_URL)
-        if not response_text:
-            return 290 # Valor de fallback do código original
+    # def _get_api_limit(self) -> int:
+    #     """Obtém o limite de itens por página para a chamada da API."""
+    #     response_text = self._make_request('GET', BASE_URL)
+    #     if not response_text:
+    #         return 290 # Valor de fallback do código original
 
-        soup = BeautifulSoup(response_text, 'html.parser')
-        limit_element = soup.find(class_='filter_number active')
-        return int(limit_element['data-value']) if limit_element else 290
+    #     soup = BeautifulSoup(response_text, 'html.parser')
+    #     limit_element = soup.find(class_='filter_number active')
+    #     return int(limit_element['data-value']) if limit_element else 290
 
-    def get_cartoon_catalog(self, search_query: str = "") -> List[Dict[str, Any]]:
+    def get_catalog(self, type_url: str, limit: int, search_query: str = "") -> List[Dict[str, Any]]:
         """Busca o catálogo de desenhos na API, com suporte a busca."""
-        limit = self._get_api_limit()
         filters = {
-            "filter_data": "filter_letter=0&type_url=desenhos&filter_audio=dublado&filter_order=name",
+            "filter_data": f"filter_letter=0&type_url={type_url}&filter_audio=dublado&filter_order=name",
             "filter_genre_add": "", "filter_genre_del": ""
         }
         payload = {
